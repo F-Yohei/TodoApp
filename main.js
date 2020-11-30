@@ -6,9 +6,9 @@ const todos = [];
 
 addTaskButton.addEventListener("click", (e) => {
   e.preventDefault();
-  const todoInput = textBox.value;
+  const todoInput = { task: textBox.value, state: "作業中" };
   textBox.value = "";
-  if (todoInput.match(/\S/g)) {
+  if (todoInput.task.match(/\S/g)) {
     //空白以外の文字に一致したら配列に追加
     todos.push(todoInput);
     textBox.focus();
@@ -16,35 +16,44 @@ addTaskButton.addEventListener("click", (e) => {
   addTask();
 });
 
+//配列に格納されたToDoをHTMLに表示させる為の関数
 const addTask = () => {
-  while (document.querySelector(".initialize")) {
-    todoList.removeChild(document.querySelector(".initialize"));
+  while (todoList.firstChild) {
+    todoList.removeChild(todoList.firstChild);
   }
 
   todos.forEach((todo, id) => {
     const tr = document.createElement("tr");
-    tr.className = "initialize";
+    todoList.appendChild(tr);
 
     const idTd = document.createElement("td");
-    idTd.innerHTML = id;
-
     const comment = document.createElement("td");
-    comment.innerHTML = todo;
-
-    const workTd = document.createElement("td");
-    const workingBtn = document.createElement("button");
-    workingBtn.innerHTML = "作業中";
-    workTd.appendChild(workingBtn);
-
+    const stateTd = document.createElement("td");
     const deleteTd = document.createElement("td");
-    const deleteBtn = document.createElement("button");
-    deleteBtn.innerHTML = "削除";
-    deleteTd.appendChild(deleteBtn);
 
     tr.appendChild(idTd);
     tr.appendChild(comment);
-    tr.appendChild(workTd);
+    tr.appendChild(stateTd);
     tr.appendChild(deleteTd);
-    todoList.appendChild(tr);
+
+    idTd.innerHTML = id;
+    comment.innerHTML = todo.task;
+
+    createStateButton(stateTd);
+    createDeleteButton(deleteTd);
   });
+};
+
+//状態を管理する為のボタンを作成する関数
+const createStateButton = (stateTd) => {
+  const workingBtn = document.createElement("button");
+  workingBtn.innerHTML = "作業中";
+  stateTd.appendChild(workingBtn);
+};
+
+//ToDoを削除するボタンを作る為の関数
+const createDeleteButton = (deleteTd) => {
+  const deleteBtn = document.createElement("button");
+  deleteBtn.innerHTML = "削除";
+  deleteTd.appendChild(deleteBtn);
 };
