@@ -13,7 +13,6 @@ addTaskButton.addEventListener('click', (e) => {
         todos.push(todoInput);
         textBox.focus();
     }
-    console.log(todos);
     addTask();
 });
 
@@ -37,31 +36,24 @@ const addTask = () => {
         tr.appendChild(stateTd);
         tr.appendChild(deleteTd);
 
-        idTd.innerHTML = id;
-        comment.innerHTML = todo.task;
+        idTd.textContent = id;
+        comment.textContent = todo.task;
 
         stateTd.appendChild(createStateButton());
-        deleteTd.appendChild(createDeleteButton(id));
+        deleteTd.appendChild(createDeleteButton());
     });
 };
 
 //状態を管理する為のボタンを作成する関数
 const createStateButton = () => {
     const workingBtn = document.createElement('button');
-    workingBtn.innerHTML = '作業中';
+    workingBtn.textContent = '作業中';
     return workingBtn;
 };
 
 //ToDoを削除するボタンを作る為の関数
-const createDeleteButton = (id) => {
+const createDeleteButton = () => {
     const deleteBtn = document.createElement('button');
-    deleteBtn.innerHTML = '削除';
-    deleteBtn.addEventListener('click', () => {
-        if (id > -1) {
-            todos.splice(id, 1);
-        }
-        addTask();
-        console.log(todos);
-    });
+    deleteBtn.textContent = '削除';
     return deleteBtn;
 };
