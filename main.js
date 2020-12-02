@@ -40,7 +40,7 @@ const addTask = () => {
         comment.textContent = todo.task;
 
         stateTd.appendChild(createStateButton());
-        deleteTd.appendChild(createDeleteButton());
+        deleteTd.appendChild(createDeleteButton(id));
     });
 };
 
@@ -52,8 +52,15 @@ const createStateButton = () => {
 };
 
 //ToDoを削除するボタンを作る為の関数
-const createDeleteButton = () => {
+const createDeleteButton = (id) => {
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = '削除';
+    deleteBtn.addEventListener('click', () => {
+        if (id > -1) {
+            todos.splice(id, 1);
+        }
+        addTask();
+        console.log(todos);
+    });
     return deleteBtn;
 };
