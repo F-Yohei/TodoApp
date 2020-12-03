@@ -39,15 +39,23 @@ const addTask = () => {
         idTd.textContent = id;
         comment.textContent = todo.task;
 
-        stateTd.appendChild(createStateButton());
+        stateTd.appendChild(createStateButton(id));
         deleteTd.appendChild(createDeleteButton(id));
     });
 };
 
 //状態を管理する為のボタンを作成する関数
-const createStateButton = () => {
+const createStateButton = (id) => {
     const workingBtn = document.createElement('button');
-    workingBtn.textContent = '作業中';
+    workingBtn.textContent = todos[id].state;
+    workingBtn.addEventListener('click', () => {
+        if (todos[id].state === '作業中') {
+            todos[id].state = '完了';
+        } else {
+            todos[id].state = '作業中';
+        }
+        addTask();
+    });
     return workingBtn;
 };
 
