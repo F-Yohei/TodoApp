@@ -60,7 +60,6 @@ const createDeleteButton = (id) => {
             todos.splice(id, 1);
         }
         addTask();
-        console.log(todos);
     });
     return deleteBtn;
 };
