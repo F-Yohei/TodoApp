@@ -1,8 +1,21 @@
+const radio1 = document.getElementById('radio1')
+const radio2 = document.getElementById('radio2')
+const radio3 = document.getElementById('radio3')
 const todoList = document.getElementById('todoList');
 const addTaskButton = document.getElementById('addTaskButton');
 const textBox = document.getElementById('todoInput');
 
 const todos = [];
+const new_arr = Array.from(todos);
+
+
+radio2.addEventListener('click', () => {
+    const filter = todos.filter((todo) => {
+        return todo.state === '作業中';
+    });
+    console.log(filter);
+});
+
 
 addTaskButton.addEventListener('click', (e) => {
     e.preventDefault();
@@ -14,6 +27,7 @@ addTaskButton.addEventListener('click', (e) => {
         textBox.focus();
     }
     addTask();
+    console.log(todos);
 });
 
 //配列に格納されたToDoをHTMLに表示させる為の関数
