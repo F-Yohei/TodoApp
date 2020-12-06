@@ -1,25 +1,25 @@
-const radio1 = document.getElementById('radio1')
-const radio2 = document.getElementById('radio2')
-const radio3 = document.getElementById('radio3')
+const allTodo = document.getElementById('allTodo')
+const workingTodo = document.getElementById('workingTodo')
+const doneTodo = document.getElementById('doneTodo')
 const todoList = document.getElementById('todoList');
 const addTaskButton = document.getElementById('addTaskButton');
 const textBox = document.getElementById('todoInput');
 
 const todos = [];
-const new_arr = Array.from(todos);
+let last_id = 0;
 
-
-radio2.addEventListener('click', () => {
+//stateが作業中にTodoのみ抽出する関数
+workingTodo.addEventListener('click', () => {
     const filter = todos.filter((todo) => {
-        return todo.state === '作業中';
+        return todo.state !== '作業中';
     });
-    console.log(filter);
 });
 
 
 addTaskButton.addEventListener('click', (e) => {
     e.preventDefault();
     const todoInput = { task: textBox.value, state: '作業中' };
+    todoInput.id = last_id;
     textBox.value = '';
     if (todoInput.task.match(/\S/g)) {
         //空白以外の文字に一致したら配列に追加
@@ -27,7 +27,7 @@ addTaskButton.addEventListener('click', (e) => {
         textBox.focus();
     }
     addTask();
-    console.log(todos);
+    last_id++;
 });
 
 //配列に格納されたToDoをHTMLに表示させる為の関数
@@ -38,6 +38,7 @@ const addTask = () => {
 
     todos.forEach((todo, id) => {
         const tr = document.createElement('tr');
+        tr.setAttribute('data-id', todo.id)
         todoList.appendChild(tr);
 
         const idTd = document.createElement('td');
@@ -50,7 +51,7 @@ const addTask = () => {
         tr.appendChild(stateTd);
         tr.appendChild(deleteTd);
 
-        idTd.textContent = id;
+        idTd.textContent = todo.id;
         comment.textContent = todo.task;
 
         stateTd.appendChild(createStateButton(id));
