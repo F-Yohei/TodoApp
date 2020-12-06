@@ -6,29 +6,23 @@ const addTaskButton = document.getElementById('addTaskButton');
 const textBox = document.getElementById('todoInput');
 
 const todos = [];
-let last_id = 0;
-
-//stateが作業中にTodoのみ抽出する関数
-workingTodo.addEventListener('click', () => {
-    const filter = todos.filter((todo) => {
-        return todo.state !== '作業中';
-    });
-});
+let taskId = 0;
 
 
 addTaskButton.addEventListener('click', (e) => {
     e.preventDefault();
     const todoInput = { task: textBox.value, state: '作業中' };
-    todoInput.id = last_id;
+    todoInput.id = taskId;
     textBox.value = '';
     if (todoInput.task.match(/\S/g)) {
         //空白以外の文字に一致したら配列に追加
         todos.push(todoInput);
         textBox.focus();
+        taskId++;
     }
     addTask();
-    last_id++;
 });
+
 
 //配列に格納されたToDoをHTMLに表示させる為の関数
 const addTask = () => {
@@ -51,7 +45,7 @@ const addTask = () => {
         tr.appendChild(stateTd);
         tr.appendChild(deleteTd);
 
-        idTd.textContent = todo.id;
+        idTd.textContent = id;
         comment.textContent = todo.task;
 
         stateTd.appendChild(createStateButton(id));
@@ -59,10 +53,12 @@ const addTask = () => {
     });
 };
 
+
 //状態を管理する為のボタンを作成する関数
 const createStateButton = (id) => {
     const workingBtn = document.createElement('button');
     workingBtn.textContent = todos[id].state;
+    workingBtn.classList.add('state');
     workingBtn.addEventListener('click', () => {
         if (todos[id].state === '作業中') {
             todos[id].state = '完了';
@@ -73,6 +69,7 @@ const createStateButton = (id) => {
     });
     return workingBtn;
 };
+
 
 //ToDoを削除するボタンを作る為の関数
 const createDeleteButton = (id) => {
@@ -86,3 +83,38 @@ const createDeleteButton = (id) => {
     });
     return deleteBtn;
 };
+
+
+//作業中のラジオボタン押すと完了済みのTASKを隠す関数
+workingTodo.addEventListener('click', () => {
+    const tr = document.querySelectorAll('tr[data-id]');
+    tr.forEach((todo) => {
+        const stateBtn = (todo.querySelector('.state'));
+        if (stateBtn.textContent === '完了') {
+            todo.classList.add('hide');
+        } else {
+            todo.classList.remove('hide');
+        }
+    });
+});
+
+//完了のラジオボタンを押すと作業中のTASKを隠す関数
+doneTodo.addEventListener('click', () => {
+    const tr = document.querySelectorAll('tr[data-id]');
+    tr.forEach((todo) => {
+        const stateBtn = (todo.querySelector('.state'));
+        if (stateBtn.textContent === '作業中') {
+            todo.classList.add('hide');
+        } else {
+            todo.classList.remove('hide');
+        }
+    });
+});
+
+//すべてのラジオボタンを押すと全てのTASKが表示される関数
+allTodo.addEventListener('click', () => {
+    const tr = document.querySelectorAll('tr[data-id]');
+    tr.forEach((todo) => {
+        todo.classList.remove('hide');
+    });
+});
