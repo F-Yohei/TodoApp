@@ -45,12 +45,36 @@ const addTask = () => {
         tr.appendChild(stateTd);
         tr.appendChild(deleteTd);
 
-        idTd.textContent = id;
+        idTd.textContent = todo.id;
         comment.textContent = todo.task;
 
         stateTd.appendChild(createStateButton(id));
         deleteTd.appendChild(createDeleteButton(id));
     });
+
+    if (workingTodo.checked) {
+        const tr = document.querySelectorAll('tr[data-id]');
+        tr.forEach((todo) => {
+            const stateBtn = (todo.querySelector('.state'));
+            if (stateBtn.textContent === '完了') {
+                todo.classList.add('hide');
+            } else {
+                todo.classList.remove('hide');
+            }
+        });
+    }
+
+    if (doneTodo.checked) {
+        const tr = document.querySelectorAll('tr[data-id]');
+        tr.forEach((todo) => {
+            const stateBtn = (todo.querySelector('.state'));
+            if (stateBtn.textContent === '作業中') {
+                todo.classList.add('hide');
+            } else {
+                todo.classList.remove('hide');
+            }
+        });
+    }
 };
 
 
